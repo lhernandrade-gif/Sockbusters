@@ -1,0 +1,136 @@
+@startuml
+title Diagrama de Componentes - Sockbuster Video & Socks
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam componentStyle uml2
+skinparam packageStyle rectangle
+skinparam linetype ortho
+skinparam nodesep 45
+skinparam ranksep 65
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+
+skinparam package {
+    BackgroundColor #F4F7FB
+    BorderColor #52677D
+    FontColor #26384A
+}
+
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor #52677D
+    FontColor #26384A
+}
+
+skinparam database {
+    BackgroundColor #EAF2F8
+    BorderColor #52677D
+}
+
+' =========================
+' CAPA DE PRESENTACIÓN
+' =========================
+package "Presentación" as Presentacion {
+    component "Interfaz web\nSockbuster" as UI
+    component "Módulo de catálogo" as UICatalogo
+    component "Módulo de carrito\ny Checkout" as UICarrito
+    component "Módulo de reseñas" as UIResenas
+    component "Módulo de administración" as UIAdmin
+
+    UI --> UICatalogo
+    UI --> UICarrito
+    UI --> UIResenas
+    UI --> UIAdmin
+}
+
+' =========================
+' CAPA DE COMUNICACIÓN
+' =========================
+package "Comunicación" as Comunicacion {
+    component "Cliente API\nHTTP / HTTPS" as ClienteAPI
+}
+
+' =========================
+' SERVICIOS DE APLICACIÓN
+' =========================
+package "Servicios de aplicación" as Aplicacion {
+    component "API de aplicación" as API
+    component "Autenticación\nJWT" as Auth
+    component "Servicio de catálogo" as Catalogo
+    component "Servicio de pedidos\ny Checkout" as Pedidos
+    component "Servicio de inventario\ny administración" as Inventario
+    component "Servicio de reseñas" as Resenas
+    component "Simulador de\nverificación de pago" as PagoSim
+}
+
+' =========================
+' DOMINIO DEL NEGOCIO
+' =========================
+package "Dominio del negocio" as Dominio {
+    component "Gestión de productos" as Productos
+    component "Clasificación y\ncolecciones temáticas" as Clasificacion
+    component "Gestión de usuarios" as Usuarios
+    component "Gestión de carrito\ny pedidos" as CarritoPedidos
+    component "Gestión de inventario" as Stock
+    component "Gestión de reseñas" as ResenasDominio
+}
+
+' =========================
+' PERSISTENCIA
+' =========================
+package "Persistencia" as Persistencia {
+    component "Repositorios de datos" as Repositorios
+    database "Base de datos" as BD
+}
+
+' =========================
+' DEPENDENCIAS ENTRE CAPAS
+' =========================
+
+UI --> ClienteAPI
+ClienteAPI --> API
+
+API --> Auth
+API --> Catalogo
+API --> Pedidos
+API --> Inventario
+API --> Resenas
+
+Pedidos --> PagoSim
+
+' Dependencia agrupada entre paquetes
+Aplicacion ..> Dominio : utiliza
+
+' Persistencia
+Dominio ..> Persistencia : consulta y almacena
+Repositorios --> BD
+
+' =========================
+' NOTAS
+' =========================
+note bottom of Comunicacion
+  La comunicación entre la interfaz
+  y los servicios utiliza HTTPS.
+end note
+
+note bottom of Auth
+  JWT se utiliza para autenticar
+  las funciones administrativas.
+end note
+
+note bottom of PagoSim
+  La verificación del pago es
+  simulada por el sistema.
+  No se contempla una pasarela externa.
+end note
+
+note bottom of Dominio
+  Los componentes representan
+  responsabilidades del negocio,
+  no servicios independientes.
+end note
+
+@enduml

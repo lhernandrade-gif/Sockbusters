@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catálogo — Sockbuster Video &amp; Socks</title>
+  <meta name="description" content="Catálogo interactivo de calcetines temáticos Sockbuster: filtra por colección, talla y precio.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧦</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="vhs-stripes" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html" aria-label="Sockbuster, inicio">
+        <span class="brand-ticket"><span>SOCKBUSTER</span></span>
+        <small>Video &amp; Socks</small>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+      <nav class="main-nav" aria-label="Principal">
+        <a href="index.html">Inicio</a>
+        <a href="catalogo.html" aria-current="page">Catálogo</a>
+        <a href="diagramas.html">Arquitectura UML</a>
+        <button class="cart-btn" id="open-cart" type="button">🛒 Carrito <span class="cart-count">0</span></button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">RF01 · Catálogo por colecciones temáticas</p>
+      <h1>El videoclub de los calcetines</h1>
+      <p>Explora, filtra y descubre cada modelo: foto, precio, stock y tallas disponibles. Abre la ficha para ver reseñas de fanáticos y agregar al carrito.</p>
+    </div>
+  </section>
+
+  <main class="container catalog-layout">
+    <aside class="filters" id="filters" aria-label="Filtros del catálogo">
+      <h2>Filtros</h2>
+      <div class="filter-group" style="border-top:0;margin-top:0;padding-top:0">
+        <label for="q">Buscar</label>
+        <input id="q" class="search" type="search" placeholder="Modelo, película o serie…">
+      </div>
+      <fieldset class="filter-group">
+        <legend>Categoría</legend>
+        <div class="chips" id="cat-chips"></div>
+      </fieldset>
+      <fieldset class="filter-group">
+        <legend>Talla</legend>
+        <div class="chips" id="size-chips"></div>
+      </fieldset>
+      <div class="filter-group">
+        <label for="price">Precio máximo</label>
+        <input id="price" type="range" min="7000" max="13000" step="500" value="13000">
+        <div class="range-row"><span>$7.000</span><output id="price-out">$13.000</output></div>
+      </div>
+      <div class="filter-group">
+        <label class="check"><input id="instock" type="checkbox"> Solo con stock</label>
+      </div>
+      <div class="filter-group">
+        <button class="btn btn-dark btn-sm" id="reset" type="button" style="width:100%">Limpiar filtros</button>
+      </div>
+    </aside>
+
+    <section aria-labelledby="results-title">
+      <h2 id="results-title" class="sr-only" style="position:absolute;left:-9999px">Resultados</h2>
+      <div class="catalog-toolbar">
+        <div>
+          <button class="btn btn-dark btn-sm filters-toggle" id="filters-toggle" type="button">⚙ Filtros</button>
+          <span class="result-count" id="count" aria-live="polite"></span>
+        </div>
+        <div class="active-filters" id="active"></div>
+        <label class="check" style="font-weight:600">Ordenar
+          <select id="sort" class="search" style="width:auto;padding:.45rem .6rem">
+            <option value="rel">Destacados</option>
+            <option value="asc">Precio: menor a mayor</option>
+            <option value="desc">Precio: mayor a menor</option>
+            <option value="rating">Mejor valorados</option>
+          </select>
+        </label>
+      </div>
+      <div class="product-grid" id="grid"></div>
+    </section>
+  </main>
+
+  <!-- Ficha de producto -->
+  <dialog id="detail" aria-labelledby="detail-title">
+    <button class="modal-close" data-close aria-label="Cerrar">✕</button>
+    <div class="detail-grid" id="detail-content"></div>
+  </dialog>
+
+  <!-- Carrito -->
+  <dialog id="cart" class="drawer" aria-labelledby="cart-title">
+    <div class="drawer-head">
+      <h2 id="cart-title">Tu carrito</h2>
+      <button class="modal-close" data-close aria-label="Cerrar carrito">✕</button>
+    </div>
+    <div class="drawer-body" id="cart-body"></div>
+    <div class="drawer-foot" id="cart-foot"></div>
+  </dialog>
+
+  <!-- Checkout -->
+  <dialog id="checkout" aria-labelledby="checkout-title" style="max-width:560px">
+    <button class="modal-close" data-close aria-label="Cerrar">✕</button>
+    <div style="padding:2rem" id="checkout-body"></div>
+  </dialog>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div><strong>Sockbuster Video &amp; Socks</strong> · Prototipo académico · Pago simulado, sin cobros reales</div>
+      <div>Desarrollado por <strong>Luis Hernández Andrade</strong> · TI3025</div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/catalogo.js"></script>
+</body>
+</html>

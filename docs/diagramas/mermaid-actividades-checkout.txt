@@ -1,0 +1,56 @@
+flowchart TD
+    INICIO((Inicio))
+    
+    A["Usuario revisa el carrito"]
+    B{"¿El carrito contiene productos?"}
+    
+    C["Sistema informa que el carrito está vacío"]
+    D["Usuario agrega productos al carrito"]
+    
+    E["Usuario inicia Checkout"]
+    F["Sistema calcula el total del carrito"]
+    G["Sistema genera resumen del pedido"]
+    H["Usuario verifica los datos del pedido"]
+    
+    I{"¿Confirma el pedido?"}
+    J["Usuario cancela el Checkout"]
+    
+    K["Sistema simula la verificación del pago"]
+    L{"¿Pago aprobado?"}
+    
+    M["Sistema informa que el pago no fue aprobado"]
+    N["Usuario intenta nuevamente el pago"]
+    
+    O["Sistema genera el pedido"]
+    P["Sistema asigna identificador único"]
+    Q["Sistema confirma el pedido al usuario"]
+    
+    FIN((Fin))
+
+    INICIO --> A
+    A --> B
+
+    B -- "No" --> C
+    C --> D
+    D --> A
+
+    B -- "Sí" --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
+
+    I -- "No" --> J
+    J --> FIN
+
+    I -- "Sí" --> K
+    K --> L
+
+    L -- "No" --> M
+    M --> N
+    N --> K
+
+    L -- "Sí" --> O
+    O --> P
+    P --> Q
+    Q --> FIN

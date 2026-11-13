@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arquitectura UML 4+1 — Sockbuster Video &amp; Socks</title>
+  <meta name="description" content="Documentación técnica de Sockbuster organizada según el modelo de vistas 4+1: lógica, desarrollo, procesos, física y escenarios.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧦</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="vhs-stripes" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html" aria-label="Sockbuster, inicio">
+        <span class="brand-ticket"><span>SOCKBUSTER</span></span>
+        <small>Video &amp; Socks</small>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+      <nav class="main-nav" aria-label="Principal">
+        <a href="index.html">Inicio</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="diagramas.html" aria-current="page">Arquitectura UML</a>
+        <a class="cart-btn" href="catalogo.html#carrito">🛒 Carrito <span class="cart-count">0</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">Documentación técnica · Modelo de vistas 4+1 (Kruchten)</p>
+      <h1>Arquitectura UML de Sockbuster</h1>
+      <p>El sistema se describe desde cuatro vistas complementarias — lógica, desarrollo, procesos y física — unidas y validadas por una quinta vista de escenarios (casos de uso).</p>
+    </div>
+  </section>
+
+  <nav class="view-nav" aria-label="Vistas 4+1">
+    <div class="container">
+      <ul>
+        <li><a href="#resumen"><span class="n">0</span> Resumen</a></li>
+        <li><a href="#logica"><span class="n">1</span> Vista Lógica</a></li>
+        <li><a href="#desarrollo"><span class="n">2</span> Vista de Desarrollo</a></li>
+        <li><a href="#procesos"><span class="n">3</span> Vista de Procesos</a></li>
+        <li><a href="#fisica"><span class="n">4</span> Vista Física</a></li>
+        <li><a href="#escenarios"><span class="n">+1</span> Escenarios</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ================= RESUMEN ================= -->
+    <section class="view-section" id="resumen" style="border-top:0">
+      <div class="container">
+        <div class="two-col" style="align-items:start">
+          <div>
+            <p class="eyebrow">El paradigma</p>
+            <h2 class="display" style="font-weight:400;font-size:clamp(1.6rem,3.5vw,2.3rem)">Cinco vistas, un sistema</h2>
+            <p style="color:var(--muted)">Cada vista responde a las preocupaciones de un público distinto: analistas (lógica), programadores (desarrollo), integradores (procesos) e ingenieros de infraestructura (física). Los escenarios recorren todas ellas para comprobar que la arquitectura satisface los requerimientos del caso Sockbuster.</p>
+            <p style="color:var(--muted)">Todos los diagramas se renderizan en vivo con un estilo unificado. En cada tarjeta puedes <strong>ampliar</strong> el diagrama, ver la <strong>imagen original</strong> entregada o consultar su <strong>código fuente</strong> Mermaid.</p>
+          </div>
+          <div class="model-41">
+            <a href="#logica" class="v-logica"><strong>Lógica</strong><span>Clases del dominio, atributos y relaciones</span><em>Usuarios finales · Analistas</em></a>
+            <a href="#escenarios" class="v-escenarios"><strong>+1 Escenarios</strong><span>Casos de uso que validan las 4 vistas</span></a>
+            <a href="#desarrollo" class="v-desarrollo"><strong>Desarrollo</strong><span>Componentes, capas y paquetes</span><em>Programadores</em></a>
+            <a href="#procesos" class="v-procesos"><strong>Procesos</strong><span>Flujos, concurrencia y sincronización</span><em>Integradores</em></a>
+            <a href="#fisica" class="v-fisica"><strong>Física</strong><span>Nodos, red y despliegue en la nube</span><em>Infraestructura</em></a>
+          </div>
+        </div>
+
+        <div class="section-head" style="margin:3rem 0 1.2rem">
+          <p class="eyebrow">Requerimientos del caso</p>
+          <h2 style="font-size:1.6rem">Lo que la arquitectura debe cumplir</h2>
+        </div>
+        <div class="req-grid">
+          <article class="req"><span class="chip req">RF01</span><h3>Catálogo por colecciones temáticas</h3><p>Explorar y filtrar por categoría con foto, precio, stock y tallas.</p></article>
+          <article class="req"><span class="chip req">RF02</span><h3>Carrito y gestión de pedidos</h3><p>Agregar, modificar cantidades y checkout simulado con ID único.</p></article>
+          <article class="req"><span class="chip req">RF03</span><h3>Administración de inventario</h3><p>Registrar modelos, asociar obra, actualizar stock y precios.</p></article>
+          <article class="req"><span class="chip req">RF04</span><h3>Reseñas de fanáticos</h3><p>Valoraciones de 1 a 5 estrellas y comentarios de usuarios registrados.</p></article>
+          <article class="req"><span class="chip req">RNF01</span><h3>Disponibilidad en la nube</h3><p>Sitio público en hosting web con carga inicial &lt; 2 segundos.</p></article>
+          <article class="req"><span class="chip req">RNF02</span><h3>Seguridad y autenticación</h3><p>Comunicación HTTPS y tokens JWT para funciones administrativas.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 1. VISTA LÓGICA ================= -->
+    <section class="view-section" id="logica">
+      <div class="container">
+        <header class="view-header">
+          <div class="view-number" style="background:var(--navy-700)">1</div>
+          <div>
+            <p class="eyebrow">Vista Lógica · Diagrama de Clases</p>
+            <h2>Estructura del dominio</h2>
+            <p>Modela las entidades del negocio Sockbuster con sus atributos, métodos, asociaciones y multiplicidades. Las clases se agrupan en cuatro paquetes: usuarios y autenticación, catálogo, carrito y pedidos, y reseñas.</p>
+            <div class="view-tags"><span class="chip req">RF01</span><span class="chip req">RF02</span><span class="chip req">RF03</span><span class="chip req">RF04</span><span class="chip req">RNF02</span></div>
+          </div>
+        </header>
+
+        <article class="diagram-card" data-diagram="clases" data-original="assets/diagramas/mermaid-clases.png">
+          <div class="diagram-toolbar">
+            <h3>Diagrama de Clases — Sockbuster Video &amp; Socks</h3>
+            <div class="tools">
+              <button class="tool-btn" data-action="expand">⤢ Ampliar</button>
+              <button class="tool-btn" data-action="original">🖼 Imagen original</button>
+              <button class="tool-btn" data-action="source" aria-pressed="false">&lt;/&gt; Código</button>
+            </div>
+          </div>
+          <div class="diagram-canvas"><div class="spinner" aria-label="Cargando diagrama"></div></div>
+          <pre class="diagram-source"></pre>
+        </article>
+
+        <div class="explain-grid">
+          <div class="explain"><h4>👤 Usuarios y autenticación</h4><p><code>Administrador</code> hereda de <code>Usuario</code> y obtiene <code>TokenJWT</code> (1 → 0..*) con fecha de expiración, base del acceso seguro a funciones administrativas (RNF02).</p></div>
+          <div class="explain"><h4>🧦 Catálogo</h4><p>Cada <code>Producto</code> pertenece a una <code>Categoria</code> y una <code>ColeccionTematica</code>, puede estar inspirado en una <code>Obra</code> (0..1), se ofrece en 1..* <code>Talla</code> y controla su <code>Stock</code> (RF01, RF03).</p></div>
+          <div class="explain"><h4>🛒 Carrito y pedidos</h4><p><code>Carrito</code> y <code>Pedido</code> se componen (◆) de ítems. El carrito genera un pedido que se procesa mediante <code>Checkout</code>, el cual genera un <code>Pago</code>; el pedido posee un <code>identificador</code> único (RF02).</p></div>
+          <div class="explain"><h4>⭐ Reseñas</h4><p>Un <code>Usuario</code> publica 0..* <code>Resena</code> y cada <code>Producto</code> las recibe. <code>validarPuntuacion()</code> asegura el rango de 1 a 5 estrellas (RF04).</p></div>
+          <div class="explain"><h4>🛠 Administración</h4><p>El <code>Administrador</code> administra productos, obras y stock, y gestiona categorías y colecciones temáticas (RF03).</p></div>
+          <div class="explain"><h4>📐 Notación</h4><ul><li><b>△</b> generalización (herencia)</li><li><b>◆</b> composición (ciclo de vida compartido)</li><li><b>→</b> asociación dirigida con multiplicidad</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 2. VISTA DE DESARROLLO ================= -->
+    <section class="view-section" id="desarrollo">
+      <div class="container">
+        <header class="view-header">
+          <div class="view-number" style="background:#6a3fb5">2</div>
+          <div>
+            <p class="eyebrow" style="color:#6a3fb5">Vista de Desarrollo · Diagrama de Componentes</p>
+            <h2>Organización del software</h2>
+            <p>Describe cómo se divide el código en capas y componentes: presentación, comunicación, servicios de aplicación, dominio del negocio y persistencia. Cada capa depende solo de la siguiente, favoreciendo la mantenibilidad y escalabilidad.</p>
+            <div class="view-tags"><span class="chip req">RF01–RF04</span><span class="chip req">RNF02</span></div>
+          </div>
+        </header>
+
+        <article class="diagram-card" data-diagram="componentes" data-original="assets/diagramas/UML-componentes.png">
+          <div class="diagram-toolbar">
+            <h3>Diagrama de Componentes — arquitectura en capas</h3>
+            <div class="tools">
+              <button class="tool-btn" data-action="expand">⤢ Ampliar</button>
+              <button class="tool-btn" data-action="original">🖼 Imagen original</button>
+              <button class="tool-btn" data-action="source" aria-pressed="false">&lt;/&gt; Código</button>
+            </div>
+          </div>
+          <div class="diagram-canvas"><div class="spinner" aria-label="Cargando diagrama"></div></div>
+          <pre class="diagram-source"></pre>
+        </article>
+
+        <div class="explain-grid">
+          <div class="explain"><h4>🖥 Presentación</h4><p>La interfaz web (HTML, CSS y JavaScript) agrupa los módulos de catálogo, carrito/checkout, reseñas y administración. En este prototipo corresponde a <code>index.html</code>, <code>catalogo.html</code> y <code>diagramas.html</code>.</p></div>
+          <div class="explain"><h4>🔌 Comunicación y servicios</h4><p>El cliente API consume la API de aplicación por HTTPS. La API orquesta los servicios de autenticación JWT, catálogo, pedidos/checkout, inventario y reseñas; pedidos usa el simulador de pago.</p></div>
+          <div class="explain"><h4>🏛 Dominio y persistencia</h4><p>Los servicios utilizan componentes de dominio que encapsulan las reglas de negocio; estos acceden a los repositorios de datos, únicos responsables de comunicarse con la base de datos.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 3. VISTA DE PROCESOS ================= -->
+    <section class="view-section" id="procesos">
+      <div class="container">
+        <header class="view-header">
+          <div class="view-number" style="background:#0e8a7e">3</div>
+          <div>
+            <p class="eyebrow" style="color:#0e8a7e">Vista de Procesos · Diagramas de Actividades</p>
+            <h2>Comportamiento dinámico</h2>
+            <p>Representa el flujo de trabajo de los procesos clave: filtrado del catálogo (RF01) y checkout (RF02).</p>
+            <div class="view-tags">
+              <span class="chip req">RF01</span><span class="chip req">RF02</span>
+              <span class="chip">👤 Acción del usuario</span><span class="chip" style="background:var(--navy-700);color:#fff">⚙️ Acción del sistema</span><span class="chip" style="background:var(--yellow)">◇ Decisión</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="two-col">
+          <article class="diagram-card" data-diagram="filtrado" data-original="assets/diagramas/mermaid-actividades-filtrado.png">
+            <div class="diagram-toolbar">
+              <h3>Actividades — Filtrado del catálogo</h3>
+              <div class="tools">
+                <button class="tool-btn" data-action="expand">⤢</button>
+                <button class="tool-btn" data-action="original">🖼 Original</button>
+                <button class="tool-btn" data-action="source" aria-pressed="false">&lt;/&gt;</button>
+              </div>
+            </div>
+            <div class="diagram-canvas"><div class="spinner" aria-label="Cargando diagrama"></div></div>
+            <pre class="diagram-source"></pre>
+          </article>
+          <article class="diagram-card" data-diagram="checkout" data-original="assets/diagramas/mermaid-actividades-checkout.png">
+            <div class="diagram-toolbar">
+              <h3>Actividades — Checkout</h3>
+              <div class="tools">
+                <button class="tool-btn" data-action="expand">⤢</button>
+                <button class="tool-btn" data-action="original">🖼 Original</button>
+                <button class="tool-btn" data-action="source" aria-pressed="false">&lt;/&gt;</button>
+              </div>
+            </div>
+            <div class="diagram-canvas"><div class="spinner" aria-label="Cargando diagrama"></div></div>
+            <pre class="diagram-source"></pre>
+          </article>
+        </div>
+
+        <div class="explain-grid">
+          <div class="explain"><h4>🔎 Filtrado</h4><p>El sistema recibe el criterio, consulta los productos de la categoría y bifurca: muestra los resultados o informa que no existen y permite modificar el filtro. Implementado en vivo en el <a href="catalogo.html">catálogo</a>.</p></div>
+          <div class="explain"><h4>💳 Checkout</h4><p>Incluye dos ciclos: el carrito vacío regresa a agregar productos y el pago rechazado permite reintentar. Al aprobarse, se genera el pedido y se asigna un identificador único (formato <code>SB-AAMMDD-XXXXXX</code>).</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 4. VISTA FÍSICA ================= -->
+    <section class="view-section" id="fisica">
+      <div class="container">
+        <header class="view-header">
+          <div class="view-number" style="background:#c2410c">4</div>
+          <div>
+            <p class="eyebrow" style="color:#c2410c">Vista Física · Diagrama de Despliegue</p>
+            <h2>Topología e infraestructura</h2>
+            <p>Muestra los nodos donde se ejecuta el sistema: el dispositivo del cliente, la CDN en Internet, el servidor web, el servidor de aplicaciones con sus servicios y la capa de persistencia. Todas las conexiones externas usan HTTPS.</p>
+            <div class="view-tags"><span class="chip req">RNF01</span><span class="chip req">RNF02</span></div>
+          </div>
+        </header>
+
+        <article class="diagram-card" data-diagram="despliegue" data-original="assets/diagramas/mermaid-despliegue.png">
+          <div class="diagram-toolbar">
+            <h3>Diagrama de Despliegue — nodos y comunicaciones</h3>
+            <div class="tools">
+              <button class="tool-btn" data-action="expand">⤢ Ampliar</button>
+              <button class="tool-btn" data-action="original">🖼 Imagen original</button>
+              <button class="tool-btn" data-action="source" aria-pressed="false">&lt;/&gt; Código</button>
+            </div>
+          </div>
+          <div class="diagram-canvas"><div class="spinner" aria-label="Cargando diagrama"></div></div>
+          <pre class="diagram-source"></pre>
+        </article>
+
+        <div class="explain-grid">
+          <div class="explain"><h4>⚡ Disponibilidad (RNF01)</h4><p>El contenido estático se distribuye desde una CDN con caché en el borde, reduciendo la latencia para cumplir una carga inicial menor a 2 segundos. Este prototipo está publicado en Netlify, cuya red global cumple el rol del nodo CDN/Web Server.</p></div>
+          <div class="explain"><h4>🔐 Seguridad (RNF02)</h4><p>El navegador se comunica con la CDN y el servidor web sobre HTTPS/TLS; el servidor web llama a la API también por HTTPS. El servicio de autenticación emite y valida tokens JWT para las operaciones administrativas.</p></div>
+          <div class="explain"><h4>🧱 Escalabilidad</h4><p>Los servicios de catálogo, pedidos, inventario y reseñas se separan dentro del servidor de aplicaciones y comparten una única base de datos, permitiendo escalar horizontalmente la capa de aplicación.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= +1 ESCENARIOS ================= -->
+    <section class="view-section" id="escenarios">
+      <div class="container">
+        <header class="view-header">
+          <div class="view-number" style="background:var(--red);font-size:2.2rem">+1</div>
+          <div>
+            <p class="eyebrow">Escenarios · Diagrama de Casos de Uso (5ta vista)</p>
+            <h2>Escenarios que unen las vistas</h2>
+            <p>Los casos de uso describen cómo Cliente, Usuario Registrado y Administrador interactúan con el sistema. Cada escenario se traza a las clases, componentes, procesos y nodos de las cuatro vistas anteriores, validando la arquitectura.</p>
+            <div class="view-tags"><span class="chip req">RF01–RF04</span><span class="chip req">RNF01–RNF02</span></div>
+          </div>
+        </header>
+
+        <article class="diagram-card" data-diagram="casos" data-original="assets/diagramas/UML-casos-de-uso.png">
+          <div class="diagram-toolbar">
+            <h3>Diagrama de Casos de Uso — Sistema Sockbuster</h3>
+            <div class="tools">
+              <button class="tool-btn" data-action="expand">⤢ Ampliar</button>
+              <button class="tool-btn" data-action="original">🖼 Imagen original</button>
+              <button class="tool-btn" data-action="source" aria-pressed="false">&lt;/&gt; Código</button>
+            </div>
+          </div>
+          <div class="diagram-canvas"><div class="spinner" aria-label="Cargando diagrama"></div></div>
+          <pre class="diagram-source"></pre>
+        </article>
+
+        <h3 class="display" style="font-weight:400;font-size:1.4rem;margin-top:2.5rem">Historias de usuario</h3>
+        <div class="story-grid">
+          <article class="story"><span class="who">Cliente · RF01</span><p>Como <b>cliente</b>, quiero filtrar el catálogo por colección temática y talla para encontrar rápidamente calcetines de mi género favorito.</p><div class="views"><span class="chip">Lógica: Producto, Categoria</span><span class="chip">Procesos: Filtrado</span></div></article>
+          <article class="story"><span class="who">Cliente · RF02</span><p>Como <b>cliente</b>, quiero agregar productos al carrito y completar un checkout que me entregue un resumen con identificador único para seguir mi pedido.</p><div class="views"><span class="chip">Lógica: Carrito, Pedido, Pago</span><span class="chip">Procesos: Checkout</span></div></article>
+          <article class="story" style="border-color:#6a3fb5"><span class="who" style="color:#6a3fb5">Administrador · RF03</span><p>Como <b>administrador</b> autenticado con JWT, quiero registrar un nuevo modelo asociado a una película o serie y actualizar su stock y precio.</p><div class="views"><span class="chip">Desarrollo: Servicio de inventario</span><span class="chip">Física: Servicio de autenticación</span></div></article>
+          <article class="story" style="border-color:#0e8a7e"><span class="who" style="color:#0e8a7e">Usuario registrado · RF04</span><p>Como <b>usuario registrado</b>, quiero valorar un producto de 1 a 5 estrellas y dejar un comentario para compartir mi opinión con otros fanáticos.</p><div class="views"><span class="chip">Lógica: Resena</span><span class="chip">Desarrollo: Servicio de reseñas</span></div></article>
+        </div>
+
+        <h3 class="display" style="font-weight:400;font-size:1.4rem">Matriz de trazabilidad 4+1</h3>
+        <p style="color:var(--muted);margin-top:0">Cómo cada escenario atraviesa las cuatro vistas y dónde se demuestra en este sitio.</p>
+        <div class="trace-wrap">
+          <table class="trace">
+            <thead>
+              <tr><th>Escenario (caso de uso)</th><th>Req.</th><th>Vista Lógica</th><th>Vista de Desarrollo</th><th>Vista de Procesos</th><th>Vista Física</th><th>En el sitio</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Explorar y filtrar catálogo</td><td>RF01</td><td>Producto, Categoria, ColeccionTematica, Talla, Stock</td><td>Módulo de catálogo → Servicio de catálogo → Gestión de productos</td><td>Actividades: Filtrado</td><td>CDN, Web Server, Servicio de catálogo, BD</td><td><a href="catalogo.html">Catálogo</a> con filtros</td></tr>
+              <tr><td>Consultar detalle de producto</td><td>RF01</td><td>Producto, Obra, Stock</td><td>Módulo de catálogo → Servicio de catálogo</td><td>—</td><td>Servicio de catálogo, BD</td><td>Ficha de producto</td></tr>
+              <tr><td>Gestionar carrito</td><td>RF02</td><td>Carrito, ItemCarrito</td><td>Módulo de carrito → Servicio de pedidos → Gestión de carrito y pedidos</td><td>Actividades: Checkout (ciclo carrito vacío)</td><td>Servicio de pedidos, BD</td><td>Carrito lateral</td></tr>
+              <tr><td>Realizar Checkout y generar pedido</td><td>RF02</td><td>Pedido, ItemPedido, Checkout, Pago</td><td>Servicio de pedidos y Checkout → Simulador de pago</td><td>Actividades: Checkout</td><td>API, Servicio de pedidos, Servicio de inventario, BD</td><td>Checkout con ID único</td></tr>
+              <tr><td>Publicar reseña</td><td>RF04</td><td>Usuario, Resena, Producto</td><td>Módulo de reseñas → Servicio de reseñas</td><td>—</td><td>Servicio de reseñas, BD</td><td>Reseñas en la ficha</td></tr>
+              <tr><td>Gestionar productos e inventario</td><td>RF03</td><td>Administrador, Producto, Obra, Stock</td><td>Módulo de administración → Servicio de inventario</td><td>—</td><td>Servicio de inventario, BD</td><td>Documentado (fuera del alcance del prototipo)</td></tr>
+              <tr><td>Autenticarse como administrador</td><td>RNF02</td><td>Usuario, Administrador, TokenJWT</td><td>Cliente API HTTPS → Autenticación JWT</td><td>—</td><td>Servicio de autenticación JWT, enlaces HTTPS</td><td>Sitio servido por HTTPS</td></tr>
+              <tr><td>Acceder al sitio público</td><td>RNF01</td><td>—</td><td>Interfaz web Sockbuster</td><td>—</td><td>Navegador → CDN → Web Server</td><td>Publicado en Netlify (CDN global)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="lightbox" class="lightbox" aria-label="Diagrama ampliado">
+    <div class="diagram-toolbar" style="position:sticky;top:0;z-index:2">
+      <h3 class="lb-title">Diagrama</h3>
+      <div class="tools">
+        <button class="tool-btn" data-zoom="-0.25" aria-label="Alejar">−</button>
+        <button class="tool-btn" data-zoom="0.25" aria-label="Acercar">+</button>
+        <button class="tool-btn" data-lb-close>✕ Cerrar</button>
+      </div>
+    </div>
+    <div class="lb-body"></div>
+  </dialog>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div><strong>Sockbuster Video &amp; Socks</strong> · Documentación de arquitectura 4+1</div>
+      <div>Desarrollado por <strong>Luis Hernández Andrade</strong> · TI3025</div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script type="module" src="js/diagramas.js"></script>
+</body>
+</html>

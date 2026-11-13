@@ -1,0 +1,31 @@
+flowchart TD
+
+    INICIO((Inicio))
+
+    A["Usuario accede al catálogo"]
+    B["Sistema muestra productos disponibles"]
+    C["Usuario selecciona una categoría"]
+    D["Sistema recibe criterio de filtrado"]
+    E["Sistema consulta productos asociados a la categoría"]
+    F{"¿Existen productos?"}
+    G["Sistema muestra productos filtrados"]
+    H["Sistema informa que no existen productos para el criterio seleccionado"]
+    I["Usuario modifica o elimina el filtro"]
+    J["Sistema actualiza el catálogo"]
+
+    FIN((Fin))
+
+    INICIO --> A
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+
+    F -- "Sí" --> G
+    G --> FIN
+
+    F -- "No" --> H
+    H --> I
+    I --> J
+    J --> FIN

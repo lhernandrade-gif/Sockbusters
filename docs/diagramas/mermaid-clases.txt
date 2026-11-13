@@ -1,0 +1,202 @@
+classDiagram
+
+    %% =========================
+    %% USUARIOS Y AUTENTICACIÓN
+    %% =========================
+
+    class Usuario {
+        +int id
+        +string nombre
+        +string email
+        +string passwordHash
+        +string rol
+        +registrarse()
+        +iniciarSesion()
+        +cerrarSesion()
+    }
+
+    class Administrador {
+        +registrarProducto()
+        +actualizarProducto()
+        +actualizarStock()
+        +modificarPrecio()
+        +gestionarColeccion()
+    }
+
+    class TokenJWT {
+        +string token
+        +datetime fechaEmision
+        +datetime fechaExpiracion
+        +boolean valido
+        +validar()
+        +expirar()
+    }
+
+    Usuario <|-- Administrador
+    Usuario "1" --> "0..*" TokenJWT : obtiene
+
+
+    %% =========================
+    %% CATÁLOGO
+    %% =========================
+
+    class Producto {
+        +int id
+        +string nombre
+        +string descripcion
+        +decimal precio
+        +string imagen
+        +boolean activo
+        +consultarDetalle()
+        +actualizarPrecio()
+        +actualizarStock()
+    }
+
+    class Categoria {
+        +int id
+        +string nombre
+        +string descripcion
+        +filtrarProductos()
+    }
+
+    class ColeccionTematica {
+        +int id
+        +string nombre
+        +string descripcion
+        +string imagen
+        +agregarProducto()
+        +eliminarProducto()
+    }
+
+    class Obra {
+        +int id
+        +string titulo
+        +string tipo
+        +string descripcion
+    }
+
+    class Talla {
+        +int id
+        +string nombre
+    }
+
+    class Stock {
+        +int id
+        +int cantidadDisponible
+        +int stockMinimo
+        +consultarDisponibilidad()
+        +aumentarStock()
+        +disminuirStock()
+    }
+
+    Producto "0..*" --> "1" Categoria : pertenece a
+    Producto "0..*" --> "1" ColeccionTematica : pertenece a
+    Producto "0..*" --> "0..1" Obra : inspirado en
+    Producto "1" --> "1..*" Talla : disponible en
+    Producto "1" --> "1" Stock : controla
+
+
+    %% =========================
+    %% CARRITO
+    %% =========================
+
+    class Carrito {
+        +int id
+        +datetime fechaCreacion
+        +calcularTotal()
+        +agregarProducto()
+        +modificarCantidad()
+        +eliminarProducto()
+        +vaciar()
+    }
+
+    class ItemCarrito {
+        +int cantidad
+        +decimal precioUnitario
+        +calcularSubtotal()
+    }
+
+    Usuario "1" --> "0..1" Carrito : posee
+    Carrito "1" *-- "1..*" ItemCarrito : contiene
+    ItemCarrito "*" --> "1" Producto : referencia
+    ItemCarrito "*" --> "1" Talla : selecciona
+
+
+    %% =========================
+    %% PEDIDOS Y CHECKOUT
+    %% =========================
+
+    class Pedido {
+        +int id
+        +string identificador
+        +datetime fecha
+        +string estado
+        +decimal total
+        +generarResumen()
+        +calcularTotal()
+        +actualizarEstado()
+    }
+
+    class ItemPedido {
+        +int cantidad
+        +decimal precioUnitario
+        +calcularSubtotal()
+    }
+
+    class Checkout {
+        +int id
+        +decimal total
+        +string estado
+        +iniciar()
+        +procesarPago()
+        +confirmarPedido()
+    }
+
+    class Pago {
+        +int id
+        +decimal monto
+        +datetime fecha
+        +string estado
+        +string metodo
+        +procesar()
+        +confirmar()
+    }
+
+    Usuario "1" --> "0..*" Pedido : realiza
+    Pedido "1" *-- "1..*" ItemPedido : contiene
+    ItemPedido "*" --> "1" Producto : corresponde a
+    ItemPedido "*" --> "1" Talla : selecciona
+
+    Carrito "1" --> "0..1" Pedido : genera
+    Pedido "1" --> "1" Checkout : procesa mediante
+    Checkout "1" --> "1" Pago : genera
+
+
+    %% =========================
+    %% RESEÑAS
+    %% =========================
+
+    class Resena {
+        +int id
+        +int puntuacion
+        +string comentario
+        +datetime fecha
+        +publicar()
+        +editar()
+        +eliminar()
+        +validarPuntuacion()
+    }
+
+    Usuario "1" --> "0..*" Resena : publica
+    Producto "1" --> "0..*" Resena : recibe
+
+
+    %% =========================
+    %% ADMINISTRACIÓN
+    %% =========================
+
+    Administrador "1" --> "0..*" Producto : administra
+    Administrador "1" --> "0..*" Categoria : gestiona
+    Administrador "1" --> "0..*" ColeccionTematica : gestiona
+    Administrador "1" --> "0..*" Obra : administra
+    Administrador "1" --> "0..*" Stock : actualiza

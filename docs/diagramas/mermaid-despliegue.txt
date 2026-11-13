@@ -1,0 +1,68 @@
+flowchart TB
+
+    %% =========================
+    %% CLIENTE
+    %% =========================
+    subgraph CLIENTE["Dispositivo del usuario"]
+        BROWSER["Navegador Web"]
+    end
+
+    %% =========================
+    %% INTERNET / CDN
+    %% =========================
+    subgraph INTERNET["Internet"]
+        CDN["CDN<br/>Contenido estático y caché"]
+    end
+
+    %% =========================
+    %% INFRAESTRUCTURA WEB
+    %% =========================
+    subgraph WEB["Servidor / Infraestructura Web"]
+        WEB_SERVER["Web Server<br/>Entrega de la aplicación web"]
+    end
+
+    %% =========================
+    %% CAPA DE APLICACIÓN
+    %% =========================
+    subgraph APP["Servidor de Aplicaciones"]
+        API["API / Backend<br/>Servicios de la aplicación"]
+
+        AUTH["Servicio de autenticación<br/>JWT"]
+
+        CATALOG["Servicio de catálogo<br/>Productos y categorías"]
+
+        ORDER["Servicio de pedidos<br/>Carrito y Checkout"]
+
+        INVENTORY["Servicio de inventario<br/>Stock y administración"]
+
+        REVIEW["Servicio de reseñas<br/>Valoraciones y comentarios"]
+    end
+
+    %% =========================
+    %% PERSISTENCIA
+    %% =========================
+    subgraph DATA["Capa de Persistencia"]
+        DB[("Base de Datos")]
+    end
+
+    %% =========================
+    %% CONEXIONES
+    %% =========================
+    BROWSER -->|"HTTPS"| CDN
+    BROWSER -->|"HTTPS"| WEB_SERVER
+
+    CDN -->|"Contenido estático"| WEB_SERVER
+
+    WEB_SERVER -->|"HTTPS / API"| API
+
+    API --> AUTH
+    API --> CATALOG
+    API --> ORDER
+    API --> INVENTORY
+    API --> REVIEW
+
+    AUTH --> DB
+    CATALOG --> DB
+    ORDER --> DB
+    INVENTORY --> DB
+    REVIEW --> DB

@@ -1,0 +1,134 @@
+
+@startuml
+left to right direction
+
+' =====================================================
+' ESTILO GENERAL
+' =====================================================
+
+skinparam backgroundColor #F8FAFC
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam linetype ortho
+skinparam nodesep 45
+skinparam ranksep 55
+skinparam packageStyle rectangle
+
+skinparam actor {
+    BackgroundColor #FFFFFF
+    BorderColor #334155
+    FontColor #0F172A
+}
+
+skinparam usecase {
+    BackgroundColor #FFFFFF
+    BorderColor #64748B
+    FontColor #0F172A
+}
+
+skinparam package {
+    BackgroundColor #F1F5F9
+    BorderColor #CBD5E1
+    FontColor #1E293B
+}
+
+skinparam ArrowColor #64748B
+skinparam ArrowThickness 1.2
+
+' =====================================================
+' ACTORES
+' =====================================================
+
+actor "Cliente" as Cliente
+actor "Usuario Registrado" as Usuario
+actor "Administrador" as Admin
+
+Usuario --|> Cliente
+
+' =====================================================
+' SISTEMA
+' =====================================================
+
+rectangle "Sistema Sockbuster Video & Socks" {
+
+    package "Catálogo" {
+        usecase "Explorar catálogo" as UC01
+        usecase "Filtrar productos" as UC02
+        usecase "Consultar detalle\nde producto" as UC03
+
+        UC01 -[hidden]down- UC02
+        UC02 -[hidden]down- UC03
+    }
+
+    package "Compra" {
+        usecase "Comprar productos" as UC04
+        usecase "Gestionar carrito" as UC05
+        usecase "Agregar producto" as UC06
+        usecase "Modificar cantidad" as UC07
+        usecase "Realizar Checkout" as UC08
+        usecase "Verificar datos\ndel pedido" as UC09
+        usecase "Simular verificación\nde pago" as UC10
+        usecase "Generar pedido" as UC11
+        usecase "Generar identificador\núnico" as UC12
+
+        UC04 .> UC05 : <<include>>
+        UC05 .> UC06 : <<include>>
+        UC05 .> UC07 : <<include>>
+        UC04 .> UC08 : <<include>>
+        UC08 .> UC09 : <<include>>
+        UC08 .> UC10 : <<include>>
+        UC08 .> UC11 : <<include>>
+        UC11 .> UC12 : <<include>>
+    }
+
+    package "Reseñas" {
+        usecase "Publicar reseña" as UC13
+        usecase "Registrar valoración" as UC14
+        usecase "Agregar comentario" as UC15
+
+        UC13 .> UC14 : <<include>>
+        UC13 .> UC15 : <<include>>
+    }
+
+    package "Administración" {
+        usecase "Gestionar productos" as UC16
+        usecase "Registrar modelo\nde calcetín" as UC17
+        usecase "Asociar película o serie" as UC18
+        usecase "Modificar precio" as UC19
+
+        usecase "Gestionar inventario" as UC20
+        usecase "Actualizar stock" as UC21
+
+        usecase "Gestionar categorías" as UC22
+        usecase "Gestionar colecciones\ntemáticas" as UC23
+
+        UC16 .> UC17 : <<include>>
+        UC17 .> UC18 : <<include>>
+        UC16 .> UC19 : <<include>>
+        UC20 .> UC21 : <<include>>
+    }
+}
+
+' =====================================================
+' ASOCIACIONES DE ACTORES
+' =====================================================
+
+Cliente -- UC01
+Cliente -- UC04
+Usuario -- UC13
+
+Admin -- UC16
+Admin -- UC20
+Admin -- UC22
+Admin -- UC23
+
+' =====================================================
+' AJUSTES DE DISTRIBUCIÓN
+' =====================================================
+
+UC01 -[hidden]right- UC04
+UC04 -[hidden]right- UC13
+UC13 -[hidden]right- UC16
+
+@enduml
