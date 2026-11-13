@@ -1,8 +1,6 @@
 # Sockbuster Video & Socks
 
-Prototipo web de la tienda **Sockbuster Video & Socks** — Evaluación Sumativa 03, asignatura *Modelamiento de soluciones informáticas* (TI3025), Ingeniería en Informática, sede Punta Arenas.
-
-**Desarrollado por:** Luis Hernández Andrade
+Prototipo web de la tienda **Sockbuster Video & Socks** — Evaluación Sumativa 03, asignatura *Modelamiento de soluciones informáticas* (TI3025), Analista Programador, sede Punta Arenas.
 
 ## 🌐 Sitio publicado
 
