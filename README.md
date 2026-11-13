@@ -4,7 +4,7 @@ Prototipo web de la tienda **Sockbuster Video & Socks** — Evaluación Sumativa
 
 ## 🌐 Sitio publicado
 
-👉 **[https://sockbusters.netlify.app](https://lhernandrade-gif.github.io/Sockbusters/)**
+👉 **https://lhernandrade-gif.github.io/Sockbusters/**
 
 ## Páginas
 
